@@ -1,8 +1,18 @@
 # FormManager
 A manager to submit, process, and view forms
 
-## composer
-composer install
+## usage
+- install with `composer install`
 
-## phpunit
-vendor/bin/phpunit
+## testing
+- test with `vendor/bin/phpunit`
+
+## Interfaces
+### Inputter
+- Data Retrieval
+- Form UI
+- Form Processor
+
+### Outputter
+- Report Builder
+- Form Viewer
