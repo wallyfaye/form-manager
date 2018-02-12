@@ -7,11 +7,6 @@ namespace FormManager;
 	class FormManager{
 
 		/**
-		* @var string
-		*/
-		private $installDir = '';
-
-		/**
 		* Class constructor
 		*
 		* @return void
