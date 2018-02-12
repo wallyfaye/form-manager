@@ -13,8 +13,18 @@
 		 */
 
 		public function instantiate_form_manager(){
-			$fm = new FormManager();
-			$this->assertInstanceOf(FormManager::class, $fm, 'FormManager should be an instance of itself');
+
+			// set test class and method
+				$testClass = '\FormManager\FormManager';
+				$testMethod = 'validateParams';
+
+			// create mock of class
+				$fm = $this->getMockBuilder($testClass)
+					->getMock();
+
+			// do test
+				$this->assertInstanceOf(FormManager::class, $fm, 'FormManager should be an instance of itself');
+
 		}
 
 		/** @test
