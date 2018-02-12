@@ -3,6 +3,7 @@
 namespace FormManager;
 
 	use FormManager\Validate\Params;
+	use FormManager\FileSystem\FolderManager;
 
 	class FormManager{
 
@@ -20,13 +21,14 @@ namespace FormManager;
 		{
 			if($this->validateParams($params)){
 				$this->paramsValid = true;
+				$this->doInstall();
 			} else {
 				$this->paramsValid = false;
 			}
 		}
 
 		/**
-		* Class constructor
+		* Check is params are valid
 		*
 		* @return boolean
 		*/
@@ -45,6 +47,18 @@ namespace FormManager;
 
 			return $paramsValid;
 
+		}
+
+		/**
+		*
+		* @return boolean 
+		*/
+		private function doInstall(){
+			$folderManager = new FolderManager();
+			$folderManager->createDirectory($this->installDir . '/fm');
+			$folderManager->createDirectory($this->installDir . '/fm' . '/submissions');
+			$folderManager->createDirectory($this->installDir . '/fm' . '/reports');
+			echo 'install complete';
 		}
 
 	}
