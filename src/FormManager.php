@@ -19,12 +19,7 @@ namespace FormManager;
 		*/
 		public function __construct($params = array()) 
 		{
-			if($this->validateParams($params)){
-				$this->paramsValid = true;
-				$this->doInstall();
-			} else {
-				$this->paramsValid = false;
-			}
+			$this->validateParams($params);
 		}
 
 		/**
@@ -47,18 +42,6 @@ namespace FormManager;
 
 			return $paramsValid;
 
-		}
-
-		/**
-		*
-		* @return boolean 
-		*/
-		private function doInstall(){
-			$folderManager = new FolderManager();
-			$folderManager->createDirectory($this->installDir . '/fm');
-			$folderManager->createDirectory($this->installDir . '/fm' . '/submissions');
-			$folderManager->createDirectory($this->installDir . '/fm' . '/reports');
-			echo 'install complete';
 		}
 
 	}

@@ -13,15 +13,8 @@
 		 */
 
 		public function instantiate_form_manager(){
-			$goodFm = new FormManager(array(
-				'installDir' => __DIR__
-			));
-			$this->assertInstanceOf(FormManager::class, $goodFm, 'FormManager should be an instance of itself');
-			$this->assertTrue($goodFm->paramsValid);
-
-			$badFm = new FormManager();
-			$this->assertFalse($badFm->paramsValid);
-
+			$fm = new FormManager();
+			$this->assertInstanceOf(FormManager::class, $fm, 'FormManager should be an instance of itself');
 		}
 
 		/** @test
