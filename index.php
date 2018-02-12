@@ -11,4 +11,6 @@
 		use FormManager\FormManager;
 
 	// instantiate
-		new FormManager(array());
+		new FormManager(array(
+			'installDir' => __DIR__
+		));
