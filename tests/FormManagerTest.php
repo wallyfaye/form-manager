@@ -13,31 +13,31 @@
 		 */
 
 		public function instantiate_form_manager(){
-			$good_fm = new FormManager(array(
+			$goodFm = new FormManager(array(
 				'installDir' => __DIR__
 			));
-			$this->assertInstanceOf(FormManager::class, $good_fm, 'FormManager should be an instance of itself');
-			$this->assertTrue($good_fm->params_valid);
+			$this->assertInstanceOf(FormManager::class, $goodFm, 'FormManager should be an instance of itself');
+			$this->assertTrue($goodFm->paramsValid);
 
-			$bad_fm = new FormManager();
-			$this->assertFalse($bad_fm->params_valid);
+			$badFm = new FormManager();
+			$this->assertFalse($badFm->paramsValid);
 
 		}
 
 		/** @test
-		 *	@covers FormManager\FormManager::validate_params
+		 *	@covers FormManager\FormManager::validateParams
 		 */
 
 		public function validate_parameters($value='')
 		{
 
 			// set test class and method
-				$test_class = '\FormManager\FormManager';
-				$test_method = 'validate_params';
+				$testClass = '\FormManager\FormManager';
+				$testMethod = 'validateParams';
 
 			// create mock of class
-				$fm = $this->getMockBuilder($test_class)
-					->setMethods([$test_method])
+				$fm = $this->getMockBuilder($testClass)
+					->setMethods([$testMethod])
 					->disableOriginalConstructor()
 					->getMock();
 
@@ -45,7 +45,7 @@
 				$reflectedClass = new ReflectionClass(get_class($fm));
 
 			// make private method accessible
-				$method = $reflectedClass->getMethod($test_method);
+				$method = $reflectedClass->getMethod($testMethod);
 				$method->setAccessible(true);
 
 			// conduct tests

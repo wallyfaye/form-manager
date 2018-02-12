@@ -7,9 +7,9 @@ namespace FormManager;
 	class FormManager{
 
 		/**
-		* @var boolean $params_valid Indicates if FormManager was instantiated correctly
+		* @var boolean $paramsValid Indicates if FormManager was instantiated correctly
 		*/
-		private $params_valid;
+		public $paramsValid;
 
 		/**
 		* Class constructor
@@ -18,10 +18,10 @@ namespace FormManager;
 		*/
 		public function __construct($params = array()) 
 		{
-			if($this->validate_params($params)){
-				$this->params_valid = true;
+			if($this->validateParams($params)){
+				$this->paramsValid = true;
 			} else {
-				$this->params_valid = false;
+				$this->paramsValid = false;
 			}
 		}
 
@@ -30,20 +30,20 @@ namespace FormManager;
 		*
 		* @return boolean
 		*/
-		private function validate_params($params = array())
+		private function validateParams($params = array())
 		{
 
-			$params_valid = true;
+			$paramsValid = true;
 
-			$params_validator = new Params();
+			$paramsValidator = new Params();
 
-			if(!isset($params['installDir']) || !$params_validator->installDir($params['installDir'])){
-				$params_valid = false;
+			if(!isset($params['installDir']) || !$paramsValidator->installDir($params['installDir'])){
+				$paramsValid = false;
 			} else {
 				$this->installDir = $params['installDir'];
 			}
 
-			return $params_valid;
+			return $paramsValid;
 
 		}
 
