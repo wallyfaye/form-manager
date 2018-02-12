@@ -13,7 +13,7 @@
 		}
 
 		/** @test
-		 *	@covers Params::installDir
+		 *	@covers FormManager\Validate\Params::installDir
 		 */
 
 		public function validate_params_for_install_directory(){

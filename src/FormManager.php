@@ -18,11 +18,7 @@ namespace FormManager;
 		*/
 		public function __construct($params = array()) 
 		{
-			if($this->validate_params($params)){
-				echo 'params ok';
-			} else {
-				echo 'params bad';
-			}
+			$this->validate_params($params);
 		}
 
 		/**

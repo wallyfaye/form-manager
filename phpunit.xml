@@ -8,5 +8,13 @@
 		<testsuite name="Test suite">
 			<directory>tests</directory>
 		</testsuite>
-	</testsuites>		
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">src</directory>
+		</whitelist>
+	</filter>
+	<logging>
+  		<log type="coverage-html" target="coverage" />
+	</logging>
 </phpunit>

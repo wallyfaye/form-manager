@@ -4,17 +4,6 @@
 
 	class Params{
 
-		public $salt = 123;
-
-		/**
-		* Class constructor
-		*
-		* @return void
-		*/
-
-		public function __construct(){
-		}
-
 		/**
 		* Validate installation directory
 		*
