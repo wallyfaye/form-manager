@@ -1,7 +1,5 @@
 <?php
 
-// example usage
-
 	// debugging
 		ini_set('display_errors', 1);
 		error_reporting(E_ALL);
@@ -11,6 +9,6 @@
 		use FormManager\FormManager;
 
 	// instantiate
-		new FormManager(array(
+		$fm = new FormManager(array(
 			'installDir' => __DIR__
 		));
