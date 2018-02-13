@@ -11,15 +11,15 @@
 		* @return boolean
 		*/
 
-		public function doInstall($root_dir = ''){
+		public static function doInstall($root_dir = ''){
 
 			$didInstall = false;
 
 			$main_fm_dir = '/fm';
 			$submission_dir = $main_fm_dir . '/submissions';
 
-			if(FolderManager::createWriteDirectory($root_dir . $main_fm_dir)){
-				if(FolderManager::createWriteDirectory($root_dir . $submission_dir)){
+			if(FolderManager::createUserDirectory($root_dir . $main_fm_dir)){
+				if(FolderManager::createUserDirectory($root_dir . $submission_dir)){
 					$didInstall = true;
 				}
 			}

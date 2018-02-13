@@ -12,3 +12,9 @@
 		$fm = new FormManager(array(
 			'installDir' => __DIR__
 		));
+
+		if($fm->install()){
+			echo 'did install';
+		} else {
+			echo 'no install';
+		}

@@ -3,14 +3,14 @@
 	namespace FormManager;
 
 	use FormManager\Validate\Params;
-	use FormManager\FileSystem\FolderManager;
+	use FormManager\Installer\InstallationManager;
 
 	class FormManager{
 
 		/**
 		* @var boolean $paramsValid Indicates if FormManager was instantiated correctly
 		*/
-		public $paramsValid;
+		private $paramsValid = false;
 
 		/**
 		* Class constructor
@@ -38,10 +38,26 @@
 				$paramsValid = false;
 			} else {
 				$this->installDir = $params['installDir'];
+				$this->paramsValid = true;
 			}
 
 			return $paramsValid;
 
+		}
+
+		/**
+		* Install Form Manager
+		*
+		* @return boolean
+		*/
+		public function install()
+		{
+			if($this->paramsValid){
+				return InstallationManager::doInstall($this->installDir);
+			} else {
+				return false;
+			}
+			
 		}
 
 	}

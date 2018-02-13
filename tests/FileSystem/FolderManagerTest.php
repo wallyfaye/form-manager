@@ -19,18 +19,18 @@
 		}
 
 		/** @test
-		 *	@covers FormManager\FileSystem\FolderManager::createWriteDirectory
+		 *	@covers FormManager\FileSystem\FolderManager::createUserDirectory
 		 */
 
 		public function validate_params_for_install_directory()
 		{
 
-			$this->assertFalse(FolderManager::createWriteDirectory(), 'missing parameters should fail');
+			$this->assertFalse(FolderManager::createUserDirectory(), 'missing parameters should fail');
 
 		}
 
 		/** @test
-		 *	@covers FormManager\FileSystem\FolderManager::createWriteDirectory
+		 *	@covers FormManager\FileSystem\FolderManager::createUserDirectory
 		 */
 
 		public function read_write_dir_create_and_permissions()
@@ -38,15 +38,15 @@
 
 			$directory_to_test = 'demo_dir';
 
-			$this->assertFalse(FolderManager::createWriteDirectory(123), 'non strings should fail');
-			$this->assertFalse(FolderManager::createWriteDirectory('/var'), 'directories without permissions should fail');
-			$this->assertFalse(FolderManager::createWriteDirectory('test/'), 'trailing slashes should fail');
-			$this->assertFalse(FolderManager::createWriteDirectory(''), 'blank string should fail');
+			$this->assertFalse(FolderManager::createUserDirectory(123), 'non strings should fail');
+			$this->assertFalse(FolderManager::createUserDirectory('/var'), 'directories without permissions should fail');
+			$this->assertFalse(FolderManager::createUserDirectory('test/'), 'trailing slashes should fail');
+			$this->assertFalse(FolderManager::createUserDirectory(''), 'blank string should fail');
 
 			$this->assertFalse(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should not exist');
-			$this->assertTrue(FolderManager::createWriteDirectory(vfsStream::url($this->main_dir) . '/' . $directory_to_test), 'directory should have been created');
+			$this->assertTrue(FolderManager::createUserDirectory(vfsStream::url($this->main_dir) . '/' . $directory_to_test), 'directory should have been created');
 			$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should exist');
-			$this->assertEquals(0200, vfsStreamWrapper::getRoot()->getChild($directory_to_test)->getPermissions(), 'directory should only have write permissions');
+			$this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild($directory_to_test)->getPermissions(), 'directory should only have write permissions');
 
 		}
 	}

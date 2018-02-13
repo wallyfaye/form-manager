@@ -4,6 +4,9 @@
 	
 	use PHPUnit\Framework\TestCase;
 	use FormManager\FormManager;
+	use org\bovigo\vfs\vfsStream;
+	use org\bovigo\vfs\vfsStreamWrapper;
+	use org\bovigo\vfs\vfsStreamDirectory;
 
 	final class FormManagerTest extends TestCase
 	{
@@ -54,6 +57,27 @@
 			// conduct tests
 				$this->assertTrue($method->invoke($fm, array('installDir' => __DIR__ )));
 				$this->assertFalse($method->invoke($fm, array('installDir' => '' )));
+
+		}
+
+		/** @test
+		 *	@covers FormManager\FormManager::install
+		 */
+
+		public function verify_installation($value=''){
+
+			$this->main_dir = 'form_manager_root';
+			vfsStreamWrapper::register();
+			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
+
+			$fm = new FormManager(array(
+				'installDir' => vfsStream::url($this->main_dir)
+			));
+
+			$this->assertTrue($fm->install());
+
+			$fm = new FormManager();
+			$this->assertFalse($fm->install());
 
 		}
 
