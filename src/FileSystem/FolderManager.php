@@ -11,7 +11,7 @@
 		* @return boolean
 		*/
 
-		public function createReadWriteDirectory($dir = false){
+		public static function createWriteDirectory($dir = false){
 			
 			$dir_created = false;
 
@@ -20,7 +20,7 @@
 			}
 
 			if (!file_exists($dir)) {
-				if(@mkdir($dir, 0600, true)){
+				if(@mkdir($dir, 0200, true)){
 					$dir_created = true;
 				}
 			}
