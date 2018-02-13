@@ -10,19 +10,17 @@
 		* @return boolean
 		*/
 
-		public function createDirectory($dir = ''){
+		public function createReadWriteDirectory($dir = false){
 
-			$dirCreated = true;
-
-			if($dir == ''){
+			if($dir === false){
 				return false;
 			}
 
 			if (!file_exists($dir)) {
-				mkdir($dir, 0700, true);
+				if(@mkdir($dir, 0600, true)){
+					return true;
+				}
 			}
-
-			return $dirCreated;
 
 		}
 

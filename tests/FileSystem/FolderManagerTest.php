@@ -19,27 +19,32 @@
 		}
 
 		/** @test
-		 *	@covers FormManager\FileSystem\FolderManager::createDirectory
+		 *	@covers FormManager\FileSystem\FolderManager::createReadWriteDirectory
 		 */
 
 		public function validate_params_for_install_directory()
 		{
 
 			$this->folderManager = new FolderManager();
-			$this->assertFalse($this->folderManager->createDirectory(), 'missing parameters should fail');
+			$this->assertFalse($this->folderManager->createReadWriteDirectory(), 'missing parameters should fail');
 
 		}
 
 		/** @test
-		 *	@covers FormManager\FileSystem\FolderManager::createDirectory
+		 *	@covers FormManager\FileSystem\FolderManager::createReadWriteDirectory
 		 */
 
-		public function create_directory()
+		public function read_write_dir_create_and_permissions()
 		{
-			$fm = new FolderManager();
-			$this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('demo'), 'direcoty should not exist');
+			
+			$directory_to_test = 'demo_dir';
 
-			$fm->createDirectory(vfsStream::url($this->main_dir) . '/' . 'demo');
-			$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('demo'), 'directory should exist');
+			$fm = new FolderManager();
+
+			$this->assertFalse(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should not exist');
+			$this->assertTrue($fm->createReadWriteDirectory(vfsStream::url($this->main_dir) . '/' . $directory_to_test), 'directory should have been created');
+			$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should exist');
+			$this->assertEquals(0600, vfsStreamWrapper::getRoot()->getChild($directory_to_test)->getPermissions(), '');
+
 		}
 	}
