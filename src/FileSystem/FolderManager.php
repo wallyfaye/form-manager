@@ -15,7 +15,11 @@
 			$dirCreated = true;
 
 			if($dir == ''){
-				$dirCreated = false;
+				return false;
+			}
+
+			if (!file_exists($dir)) {
+				mkdir($dir, 0700, true);
 			}
 
 			return $dirCreated;
