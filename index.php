@@ -10,5 +10,5 @@
 
 	// instantiate
 		$fm = new FormManager(array(
-			'directory' => __DIR__
+			'installDir' => __DIR__
 		));

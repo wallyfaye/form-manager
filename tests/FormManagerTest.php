@@ -52,8 +52,8 @@
 				$method->setAccessible(true);
 
 			// conduct tests
-				$this->assertTrue($method->invoke($fm, array('directory' => __DIR__ )));
-				$this->assertFalse($method->invoke($fm, array('directory' => '' )));
+				$this->assertTrue($method->invoke($fm, array('installDir' => __DIR__ )));
+				$this->assertFalse($method->invoke($fm, array('installDir' => '' )));
 
 		}
 
