@@ -1,6 +1,6 @@
 <?php
 
-namespace FormManager;
+	namespace FormManager;
 
 	use FormManager\Validate\Params;
 	use FormManager\FileSystem\FolderManager;
@@ -34,7 +34,7 @@ namespace FormManager;
 
 			$paramsValidator = new Params();
 
-			if(!isset($params['installDir']) || !$paramsValidator->installDir($params['installDir'])){
+			if(!isset($params['installDir']) || !$paramsValidator->directory($params['installDir'])){
 				$paramsValid = false;
 			} else {
 				$this->installDir = $params['installDir'];

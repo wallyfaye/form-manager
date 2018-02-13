@@ -1,6 +1,7 @@
 <?php
 
 	namespace FormManager\FileSystem;
+	use FormManager\Validate\Params;
 
 	class FolderManager{
 
@@ -12,7 +13,7 @@
 
 		public function createReadWriteDirectory($dir = false){
 
-			if($dir === false){
+			if(!Params::directory($dir)){
 				return false;
 			}
 

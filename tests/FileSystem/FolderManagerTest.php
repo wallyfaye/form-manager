@@ -36,10 +36,15 @@
 
 		public function read_write_dir_create_and_permissions()
 		{
-			
+
 			$directory_to_test = 'demo_dir';
 
 			$fm = new FolderManager();
+
+			$this->assertFalse($fm->createReadWriteDirectory(123), 'non strings should fail');
+			$this->assertFalse($fm->createReadWriteDirectory('/var'), 'directories without permissions should fail');
+			$this->assertFalse($fm->createReadWriteDirectory('test/'), 'trailing slashes should fail');
+			$this->assertFalse($fm->createReadWriteDirectory(''), 'blank string should fail');
 
 			$this->assertFalse(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should not exist');
 			$this->assertTrue($fm->createReadWriteDirectory(vfsStream::url($this->main_dir) . '/' . $directory_to_test), 'directory should have been created');

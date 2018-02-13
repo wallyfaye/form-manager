@@ -10,7 +10,7 @@
 		* @return boolean
 		*/
 
-		public function installDir($dir = ''){
+		public static function directory($dir = ''){
 
 			$dirValid = true;
 
