@@ -20,5 +20,22 @@
 			if (!($v = filter_input(INPUT_GET, 'v', FILTER_SANITIZE_STRING))) {
 				$v = 'n'; 
 			}
-			$fm->runMode($m, $v);
+			if($fm->validateRunMode($m)){
+				switch ($m) {
+					case 'i':
+						echo 'i';
+					break;
+					
+					case 'o':
+						echo 'o';
+					break;
+				}
+				// echo $m;
+				// $paramsValidator = new Params();
+				// if($paramsValidator->hash($value)){
+				// 	echo 'ok';
+				// } else {
+				// 	echo 'no';
+				// }
+			};
 		}

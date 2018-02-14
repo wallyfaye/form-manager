@@ -3,6 +3,7 @@
 	namespace FormManager;
 
 	use FormManager\Validate\Params;
+	use FormManager\Validate\Application;
 	use FormManager\Installer\InstallationManager;
 
 	class FormManager{
@@ -81,26 +82,12 @@
 		*
 		* @return boolean
 		*/
-		public function runMode($mode = 'n', $value='n')
+		public function validateRunMode($mode = 'n')
 		{
 			$valid_run_mode = false;
 
 			if($this->paramsValid){
-				switch ($mode) {
-					case 'i':
-						$valid_run_mode = true;
-						echo 'i';
-						break;
-					
-					case 'o':
-						$valid_run_mode = true;
-						echo 'o';
-						break;
-					
-					default:
-						echo '';
-						break;
-				}
+				$valid_run_mode = Application::mode($mode);
 			}
 
 			return $valid_run_mode;

@@ -91,7 +91,7 @@
 		}
 
 		/** @test
-		 *	@covers FormManager\FormManager::runMode
+		 *	@covers FormManager\FormManager::validateRunMode
 		 */
 
 		public function test_application_modes(){
@@ -104,12 +104,12 @@
 				'installDir' => vfsStream::url($this->main_dir)
 			));
 
-			$this->assertTrue($fm->runMode('i'), 'i is a valid mode');
-			$this->assertTrue($fm->runMode('o'), 'o is a valid mode');
-			$this->assertFalse($fm->runMode('io'), 'i and o are the only valid modes');
-			$this->assertFalse($fm->runMode(), 'i and o are the only valid modes');
-			$this->assertFalse($fm->runMode(function(){exit();}), 'i and o are the only valid modes');
-			$this->assertFalse($fm->runMode(false), 'i and o are the only valid modes');
+			$this->assertTrue($fm->validateRunMode('i'), 'i is a valid mode');
+			$this->assertTrue($fm->validateRunMode('o'), 'o is a valid mode');
+			$this->assertFalse($fm->validateRunMode('io'), 'i and o are the only valid modes');
+			$this->assertFalse($fm->validateRunMode(), 'i and o are the only valid modes');
+			$this->assertFalse($fm->validateRunMode(function(){exit();}), 'i and o are the only valid modes');
+			$this->assertFalse($fm->validateRunMode(false), 'i and o are the only valid modes');
 
 		}
 
