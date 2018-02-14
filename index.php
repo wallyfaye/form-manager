@@ -13,4 +13,8 @@
 			'installDir' => __DIR__
 		));
 
-		echo $fm->install();
+		if($fm->install() == 'installed'){
+			echo 'run app';
+			// show input form
+			// show form submissions
+		}
