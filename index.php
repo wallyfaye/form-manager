@@ -14,7 +14,11 @@
 		));
 
 		if($fm->install() == 'installed'){
-			echo 'run app';
-			// show input form
-			// show form submissions
+			if (!($m = filter_input(INPUT_GET, 'm', FILTER_SANITIZE_STRING))) {
+				$m = 'n'; 
+			}
+			if (!($v = filter_input(INPUT_GET, 'v', FILTER_SANITIZE_STRING))) {
+				$v = 'n'; 
+			}
+			$fm->runMode($m, $v);
 		}

@@ -34,7 +34,7 @@
 		 *	@covers FormManager\FormManager::validateParams
 		 */
 
-		public function validate_parameters($value='')
+		public function validate_parameters()
 		{
 
 			// set test class and method
@@ -64,7 +64,7 @@
 		 *	@covers FormManager\FormManager::install
 		 */
 
-		public function verify_installation($value=''){
+		public function verify_installation(){
 
 			$this->main_dir = 'form_manager_root';
 			vfsStreamWrapper::register();
@@ -87,6 +87,29 @@
 
 			vfsStreamWrapper::getRoot()->getChild('fm')->removeChild('submissions');
 			$this->assertEquals('bad_install', $fm->install(), 'missing directories trigger bad install');
+
+		}
+
+		/** @test
+		 *	@covers FormManager\FormManager::runMode
+		 */
+
+		public function test_application_modes(){
+
+			$this->main_dir = 'form_manager_root';
+			vfsStreamWrapper::register();
+			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
+
+			$fm = new FormManager(array(
+				'installDir' => vfsStream::url($this->main_dir)
+			));
+
+			$this->assertTrue($fm->runMode('i'), 'i is a valid mode');
+			$this->assertTrue($fm->runMode('o'), 'o is a valid mode');
+			$this->assertFalse($fm->runMode('io'), 'i and o are the only valid modes');
+			$this->assertFalse($fm->runMode(), 'i and o are the only valid modes');
+			$this->assertFalse($fm->runMode(function(){exit();}), 'i and o are the only valid modes');
+			$this->assertFalse($fm->runMode(false), 'i and o are the only valid modes');
 
 		}
 

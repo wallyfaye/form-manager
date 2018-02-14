@@ -76,4 +76,34 @@
 			
 		}
 
+		/**
+		* Determines the mode to run the application in
+		*
+		* @return boolean
+		*/
+		public function runMode($mode = 'n', $value='n')
+		{
+			$valid_run_mode = false;
+
+			if($this->paramsValid){
+				switch ($mode) {
+					case 'i':
+						$valid_run_mode = true;
+						echo 'i';
+						break;
+					
+					case 'o':
+						$valid_run_mode = true;
+						echo 'o';
+						break;
+					
+					default:
+						echo '';
+						break;
+				}
+			}
+
+			return $valid_run_mode;
+		}
+
 	}
