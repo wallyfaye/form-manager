@@ -48,15 +48,31 @@
 		/**
 		* Install Form Manager
 		*
-		* @return boolean
+		* @return string
 		*/
 		public function install()
 		{
 			if($this->paramsValid){
-				return InstallationManager::doInstall($this->installDir);
-			} else {
-				return false;
+				$install_status = InstallationManager::checkInstall($this->installDir);
+				switch ($install_status) {
+					case 'no_install':
+						if(InstallationManager::doInstall($this->installDir)){
+							return 'installed';
+						} else {
+							return 'install_failed';
+						}
+					break;
+					
+					case 'installed':
+						return 'installed';
+					break;
+					
+					case 'bad_install':
+						return 'bad_install';
+				}
 			}
+			
+			return 'install_skipped';
 			
 		}
 

@@ -70,14 +70,23 @@
 			vfsStreamWrapper::register();
 			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
 
+			$fm = new FormManager();
+			$this->assertEquals('install_skipped', $fm->install(), 'install skipped with no parameters');
+
 			$fm = new FormManager(array(
 				'installDir' => vfsStream::url($this->main_dir)
 			));
 
-			$this->assertTrue($fm->install());
+			vfsStreamWrapper::getRoot()->chmod(0000);
+			$this->assertEquals('install_failed', $fm->install(), 'install needs permission to occur');
 
-			$fm = new FormManager();
-			$this->assertFalse($fm->install());
+			vfsStreamWrapper::getRoot()->chmod(0700);
+			$this->assertEquals('installed', $fm->install(), 'good params allow for installation');
+
+			$this->assertEquals('installed', $fm->install(), 'install occurs only once');
+
+			vfsStreamWrapper::getRoot()->getChild('fm')->removeChild('submissions');
+			$this->assertEquals('bad_install', $fm->install(), 'missing directories trigger bad install');
 
 		}
 

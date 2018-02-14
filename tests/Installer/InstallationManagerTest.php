@@ -54,4 +54,30 @@
 			$this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->getPermissions(), 'submissions directory should only have write permissions');
 
 		}
+
+		/** @test
+		 *	@covers FormManager\Installer\InstallationManager::checkInstall
+		 */
+
+		public function check_for_installation_status(){
+
+			$im = new InstallationManager();
+			$this->assertEquals('no_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should not exist');
+			$this->assertTrue($im->doInstall(vfsStream::url($this->main_dir)), 'install should have succeeded');
+			$this->assertEquals('installed', $im->checkInstall(vfsStream::url($this->main_dir)), 'an installation should have been found');
+
+			vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->chmod(0777);
+			$this->assertEquals('bad_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should have permission problems');
+			vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->chmod(0700);
+
+			vfsStreamWrapper::getRoot()->getChild('fm')->chmod(0777);
+			$this->assertEquals('bad_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should have permission problems');
+
+			vfsStreamWrapper::getRoot()->getChild('fm')->removeChild('submissions');
+			$this->assertEquals('bad_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should have permission problems');
+
+
+		}
+
+
 	}

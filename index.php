@@ -13,8 +13,4 @@
 			'installDir' => __DIR__
 		));
 
-		if($fm->install()){
-			echo 'did install';
-		} else {
-			echo 'no install';
-		}
+		echo $fm->install();
