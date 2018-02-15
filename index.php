@@ -32,9 +32,7 @@
 				switch ($m) {
 					case 'i':
 						if($fm->validateHash($v, 'input')){
-							echo 'hash valid';
-						} else {
-							echo 'hash invalid';
+							print_r($fm->inputValue);
 						}
 					break;
 					
@@ -42,12 +40,5 @@
 						echo 'o';
 					break;
 				}
-				// echo $m;
-				// $paramsValidator = new Params();
-				// if($paramsValidator->hash($value)){
-				// 	echo 'ok';
-				// } else {
-				// 	echo 'no';
-				// }
 			};
 		}

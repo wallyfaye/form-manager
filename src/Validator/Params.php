@@ -1,6 +1,6 @@
 <?php
 
-	namespace FormManager\Validate;
+	namespace FormManager\Validator;
 
 	class Params{
 
@@ -58,19 +58,40 @@
 			}
 
 			if($valuesValid){
-				foreach ($values as $key_values => $value_values) {
-					// each value should be an array
-					if(gettype($value_values) != 'array'){
-						$valuesValid = false;
+				if(count($values) == 0){
+					$valuesValid = false;
+				} else {
+					foreach ($values as $key_values => $value_values) {
+
+						// each value should be an array
+						if(gettype($value_values) != 'array'){
+							$valuesValid = false;
+						}
+
 					}
-					// // each value should have an id that is a string
-					// if(!(isset($value_values['id']) && gettype($value_values['id']) == 'string')){
-					// 	$valuesValid = false;
-					// }
 				}
 			}
 
 			return $valuesValid;
 
 		}
+
+		public static function salt($salt = ''){
+
+			$saltValid = true;
+
+			// if the salt is not set, fail
+			if($salt == ''){
+				$saltValid = false;
+			}
+
+			// if the salt is not an string, fail
+			if(gettype($salt) != 'string' || strlen($salt) != 16){
+				$saltValid = false;
+			}
+
+			return $saltValid;
+
+		}
+
 	}

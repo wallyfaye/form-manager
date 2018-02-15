@@ -1,6 +1,6 @@
 <?php
 
-	namespace FormManager\Validate;
+	namespace FormManager\Validator;
 
 	class Application{
 

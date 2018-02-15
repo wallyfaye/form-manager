@@ -1,6 +1,6 @@
 <?php
 
-	namespace FormManager\Validate;
+	namespace FormManager\Hasher;
 
 	class Hash{
 
@@ -8,38 +8,36 @@
 		* @var string $hashType indicates what hashing function is used
 		*/
 		private $hashType = '';
-		private $salt = '1234567890123456';
+		private $salt = '';
 
 		/**
 		* Class constructor
 		*
 		* @return void
 		*/
-		public function __construct($type = '') 
+		public function __construct($type = '', $salt = '') 
 		{
 			$this->hashType = $type;
+			$this->salt = $salt;
 		}
 
 		/**
 		* Hash value generator
 		*
-		* @return boolean
+		* @return string
 		*/
 
-		public function generate($hash = ''){
-			$hash_valid = false;
+		public function generate($value = ''){
+			$hash = '';
 			switch ($this->hashType) {
 				case 'input':
-					if($hash != ''){
-						$hash_valid = $this->input_hash($hash);
+					if($value != ''){
+						$hash = $this->input_hash($value);
 					}
 				break;
-				
-				default:
-					break;
 			}
 
-			return $hash_valid;
+			return $hash;
 
 		}
 

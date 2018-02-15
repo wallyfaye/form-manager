@@ -1,7 +1,7 @@
 <?php
 
 	namespace FormManager\FileSystem;
-	use FormManager\Validate\Params;
+	use FormManager\Validator\Params;
 
 	class FolderManager{
 

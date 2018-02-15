@@ -2,9 +2,9 @@
 
 	namespace FormManager;
 
-	use FormManager\Validate\Params;
-	use FormManager\Validate\Application;
-	use FormManager\Validate\Hash;
+	use FormManager\Validator\Params;
+	use FormManager\Validator\Application;
+	use FormManager\Hasher\Hash;
 	use FormManager\Installer\InstallationManager;
 
 	class FormManager{
@@ -46,6 +46,12 @@
 				$paramsValid = false;
 			} else {
 				$this->inputValues = $params['inputValues'];
+			}
+
+			if(!isset($params['inputSalt']) || !$paramsValidator->salt($params['inputSalt'])){
+				$paramsValid = false;
+			} else {
+				$this->inputSalt = $params['inputSalt'];
 			}
 
 			if($paramsValid){
@@ -110,16 +116,12 @@
 		*/
 		public function validateHash($hash='', $type='')
 		{
-			$valid_hash = true;
-			$vh = new Hash($type);
+			$valid_hash = false;
+			$vh = new Hash($type, $this->inputSalt);
 			$hashed_value = $vh->generate($hash);
 			if(isset($this->inputValues[$hashed_value])){
-				echo $hashed_value;
-				echo '<br />';
-				print_r($this->inputValues[$hashed_value]);
-				echo '<br />';
-			} else {
-				$valid_hash = false;
+				$this->inputValue = $this->inputValues[$hashed_value];
+				$valid_hash = true;
 			}
 			return $valid_hash;
 		}

@@ -11,6 +11,21 @@
 	final class FormManagerTest extends TestCase
 	{
 
+		public function setUp()
+		{
+			$this->valid_params = array(
+				'installDir' => __DIR__,
+				'inputSalt' => '1234567890123456',
+				'inputValues' => array(
+					'NovstOCKb5aHffYvehwMkAjyZQ5TZYW631AMhVAsgev4ysN0HIHhD2dX2k0MidsuqYugyHzKOeRGebmrVpp' => array(
+						'first_name' => 'John',
+						'last_name' => 'Doe'
+						)
+					)
+				);
+			$this->invalid_params = array();
+		}
+
 		/** @test
 		 *	@covers FormManager\FormManager
 		 */
@@ -54,9 +69,8 @@
 				$method = $reflectedClass->getMethod($testMethod);
 				$method->setAccessible(true);
 
-			// conduct tests
-				$this->assertTrue($method->invoke($fm, array('installDir' => __DIR__ )));
-				$this->assertFalse($method->invoke($fm, array('installDir' => '' )));
+				$this->assertTrue($method->invoke($fm, $this->valid_params), 'valid params should validate');
+				$this->assertFalse($method->invoke($fm, $this->invalid_params), 'invalid params should not validate');
 
 		}
 
@@ -73,9 +87,9 @@
 			$fm = new FormManager();
 			$this->assertEquals('install_skipped', $fm->install(), 'install skipped with no parameters');
 
-			$fm = new FormManager(array(
-				'installDir' => vfsStream::url($this->main_dir)
-			));
+			$valid_params_mocked = $this->valid_params;
+			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
+			$fm = new FormManager($valid_params_mocked);
 
 			vfsStreamWrapper::getRoot()->chmod(0000);
 			$this->assertEquals('install_failed', $fm->install(), 'install needs permission to occur');
@@ -100,9 +114,9 @@
 			vfsStreamWrapper::register();
 			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
 
-			$fm = new FormManager(array(
-				'installDir' => vfsStream::url($this->main_dir)
-			));
+			$valid_params_mocked = $this->valid_params;
+			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
+			$fm = new FormManager($valid_params_mocked);
 
 			$this->assertTrue($fm->validateApplicationMode('i'), 'i is a valid mode');
 			$this->assertTrue($fm->validateApplicationMode('o'), 'o is a valid mode');
@@ -111,6 +125,22 @@
 			$this->assertFalse($fm->validateApplicationMode(function(){exit();}), 'i and o are the only valid modes');
 			$this->assertFalse($fm->validateApplicationMode(false), 'i and o are the only valid modes');
 
+		}
+
+		/** @test
+		 *	@covers FormManager\FormManager::validateHash
+		 */
+
+		public function test_has_validation(){
+			$this->main_dir = 'form_manager_root';
+			vfsStreamWrapper::register();
+			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
+
+			$valid_params_mocked = $this->valid_params;
+			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
+			$fm = new FormManager($valid_params_mocked);
+			$this->assertTrue($fm->validateHash('1234', 'input'), 'valid hashes should resolve to an input value');
+			
 		}
 
 

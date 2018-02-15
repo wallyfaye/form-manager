@@ -3,13 +3,13 @@
 	declare(strict_types=1);
 	
 	use PHPUnit\Framework\TestCase;
-	use FormManager\Validate\Application;
+	use FormManager\Validator\Application;
 
 	final class ApplicationTest extends TestCase
 	{
 
 		/** @test
-		 *	@covers FormManager\Validate\Application::mode
+		 *	@covers FormManager\Validator\Application::mode
 		 */
 
 		public function test_for_application_modes(){
