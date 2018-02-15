@@ -43,4 +43,34 @@
 
 		}
 
+		public static function values($values = ''){
+
+			$valuesValid = true;
+
+			// if the values is not set, fail
+			if($values == ''){
+				$valuesValid = false;
+			}
+
+			// if the values is not an array, fail
+			if(gettype($values) != 'array'){
+				$valuesValid = false;
+			}
+
+			if($valuesValid){
+				foreach ($values as $key_values => $value_values) {
+					// each value should be an array
+					if(gettype($value_values) != 'array'){
+						$valuesValid = false;
+					}
+					// // each value should have an id that is a string
+					// if(!(isset($value_values['id']) && gettype($value_values['id']) == 'string')){
+					// 	$valuesValid = false;
+					// }
+				}
+			}
+
+			return $valuesValid;
+
+		}
 	}

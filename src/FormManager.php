@@ -40,6 +40,15 @@
 				$paramsValid = false;
 			} else {
 				$this->installDir = $params['installDir'];
+			}
+
+			if(!isset($params['inputValues']) || !$paramsValidator->values($params['inputValues'])){
+				$paramsValid = false;
+			} else {
+				$this->inputValues = $params['inputValues'];
+			}
+
+			if($paramsValid){
 				$this->paramsValid = true;
 			}
 
@@ -103,7 +112,16 @@
 		{
 			$valid_hash = true;
 			$vh = new Hash($type);
-			return $vh->validate($hash);
+			$hashed_value = $vh->generate($hash);
+			if(isset($this->inputValues[$hashed_value])){
+				echo $hashed_value;
+				echo '<br />';
+				print_r($this->inputValues[$hashed_value]);
+				echo '<br />';
+			} else {
+				$valid_hash = false;
+			}
+			return $valid_hash;
 		}
 
 	}

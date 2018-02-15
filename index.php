@@ -9,12 +9,14 @@
 		use FormManager\FormManager;
 
 	// instantiate
+	// for ?m=i&v=1234
 		$fm = new FormManager(array(
 			'installDir' => __DIR__,
-			'inputHash' => 'fldkjfalkfjalkfjalkfa',
+			'inputSalt' => '1234567890123456',
 			'inputValues' => array(
-				array(
-					'id' => 'fldkjfalkfjalkfjalkfa', 
+				'NovstOCKb5aHffYvehwMkAjyZQ5TZYW631AMhVAsgev4ysN0HIHhD2dX2k0MidsuqYugyHzKOeRGebmrVpp' => array(
+					'first_name' => 'John',
+					'last_name' => 'Doe'
 				)
 			)
 		));
@@ -31,6 +33,8 @@
 					case 'i':
 						if($fm->validateHash($v, 'input')){
 							echo 'hash valid';
+						} else {
+							echo 'hash invalid';
 						}
 					break;
 					

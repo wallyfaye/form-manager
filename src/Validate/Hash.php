@@ -8,6 +8,7 @@
 		* @var string $hashType indicates what hashing function is used
 		*/
 		private $hashType = '';
+		private $salt = '1234567890123456';
 
 		/**
 		* Class constructor
@@ -20,12 +21,12 @@
 		}
 
 		/**
-		* Hash values for validation
+		* Hash value generator
 		*
 		* @return boolean
 		*/
 
-		public function validate($hash = ''){
+		public function generate($hash = ''){
 			$hash_valid = false;
 			switch ($this->hashType) {
 				case 'input':
@@ -45,11 +46,17 @@
 		/**
 		* Test input hash
 		*
-		* @return boolean
+		* @return string
 		*/
 
 		private function input_hash($hash_provided){
-			return true;
+
+			$salt = '$6$rounds=5000$' . $this->salt;
+			$crypt_value = crypt($hash_provided, $salt);
+			$crypt_value = str_replace($salt, "", $crypt_value);
+			$crypt_value = preg_replace("/[^a-zA-Z0-9]+/", "", $crypt_value);
+			return $crypt_value;
+
 		}
 
 	}
