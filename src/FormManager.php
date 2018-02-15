@@ -4,6 +4,7 @@
 
 	use FormManager\Validate\Params;
 	use FormManager\Validate\Application;
+	use FormManager\Validate\Hash;
 	use FormManager\Installer\InstallationManager;
 
 	class FormManager{
@@ -82,7 +83,7 @@
 		*
 		* @return boolean
 		*/
-		public function validateRunMode($mode = 'n')
+		public function validateApplicationMode($mode = 'n')
 		{
 			$valid_run_mode = false;
 
@@ -91,6 +92,18 @@
 			}
 
 			return $valid_run_mode;
+		}
+
+		/**
+		* Valid hashes provided
+		*
+		* @return boolean
+		*/
+		public function validateHash($hash='', $type='')
+		{
+			$valid_hash = true;
+			$vh = new Hash($type);
+			return $vh->validate($hash);
 		}
 
 	}

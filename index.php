@@ -10,7 +10,13 @@
 
 	// instantiate
 		$fm = new FormManager(array(
-			'installDir' => __DIR__
+			'installDir' => __DIR__,
+			'inputHash' => 'fldkjfalkfjalkfjalkfa',
+			'inputValues' => array(
+				array(
+					'id' => 'fldkjfalkfjalkfjalkfa', 
+				)
+			)
 		));
 
 		if($fm->install() == 'installed'){
@@ -20,10 +26,12 @@
 			if (!($v = filter_input(INPUT_GET, 'v', FILTER_SANITIZE_STRING))) {
 				$v = 'n'; 
 			}
-			if($fm->validateRunMode($m)){
+			if($fm->validateApplicationMode($m)){
 				switch ($m) {
 					case 'i':
-						echo 'i';
+						if($fm->validateHash($v, 'input')){
+							echo 'hash valid';
+						}
 					break;
 					
 					case 'o':
