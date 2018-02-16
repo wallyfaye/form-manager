@@ -11,6 +11,82 @@
 	// instantiate
 	// for ?m=i&v=1234
 		$fm = new FormManager(array(
+			'formSchema' => array(
+				'name' => array(
+					'type' => 'group',
+					'group_name' => 'Name',
+					'features' => array(
+						'duplicatable' => true, 
+					),
+					'children' => array(
+						'first_name' => array(
+							'type' => 'input_text',
+							'field_name' => 'First Name',
+							'features' => array(
+								'validation' => array(
+									'required' => true
+								)
+							)
+						),
+						'last_name' => array(
+							'type' => 'input_text',
+							'field_name' => 'Last Name',
+							'features' => array(
+								'validation' => array(
+									'required' => true
+								)
+							)
+						)
+					)
+				),
+				'gender' => array(
+					'type' => 'input_select',
+					'field_name' => 'Gender',
+					'field_feed' => array(
+						array(
+							'item_value' => 'male', 
+							'item_name' =>  'Male'
+						),
+						array(
+							'item_value' => 'female', 
+							'item_name' =>  'Female'
+						)
+					)
+				),
+				'subscribe' => array(
+					'type' => 'input_single_checkbox',
+					'field_name' => 'Do you want to subscribe?',
+					'field_feed' => array(
+						array(
+							'item_value' => 'yes', 
+							'item_name' =>  'Yes'
+						)
+					)
+				),
+				'email' => array(
+					'type' => 'input_text',
+					'field_name' => 'Email',
+					'features' => array(
+						'validation' => array(
+							'required' => true,
+							'rule' => 'email'
+						)
+					)
+				),
+				'resume' => array(
+					'type' => 'input_file',
+					'field_name' => 'Resume',
+					'features' => array(
+						'validation' => array(
+							'required' => true
+						)
+					)
+				),
+				'bio' => array(
+					'type' => 'input_textarea',
+					'field_name' => 'Bio'
+				)
+			),
 			'installDir' => __DIR__,
 			'inputSalt' => '1234567890123456',
 			'inputValues' => array(
