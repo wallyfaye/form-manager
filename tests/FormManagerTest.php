@@ -160,7 +160,7 @@
 		 *	@covers FormManager\FormManager::getFormData
 		 */
 
-		public function test_returns_html(){
+		public function test_form_data(){
 			$this->main_dir = 'form_manager_root';
 			vfsStreamWrapper::register();
 			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
