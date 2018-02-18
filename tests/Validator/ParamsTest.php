@@ -52,4 +52,43 @@
 
 		}
 
+		/** @test
+		 *	@covers FormManager\Validator\Params::schema
+		 */
+
+		public function validate_params_for_install_schema(){
+
+			$this->assertFalse($this->params::schema(), 'blank schema is not valid');
+			$this->assertFalse($this->params::schema('123'), 'non arrays are not valid');
+			$this->assertFalse($this->params::schema(array()), 'empty arrays are not valid');
+			$this->assertFalse($this->params::schema(array(array('type' => 'abc'))), 'types that are not recognized are not valid');
+			$this->assertFalse($this->params::schema(array(array('type' => 'group'))), 'type group without children set is not valid');
+			$this->assertFalse($this->params::schema(array(array('type' => 'group', 'children' => 123))), 'type group with children that is not an array is not valid');
+			$this->assertFalse($this->params::schema(array(array('type' => 'group', 'children' => array()))), 'type group with children that is an empty array is not valid');
+
+			$invalidSchema = array(
+				'test0' => array(
+					'type' => 'group', 
+					'children' => array(
+						'test1' => array(
+							'type' => 'abc'
+						)
+					)
+				)
+			);
+			$this->assertFalse($this->params::schema($invalidSchema), 'type group with children that is an invalid type is not valid');
+
+			$validSchema = array(
+				'test0' => array(
+					'type' => 'group', 
+					'children' => array(
+						'test1' => array(
+							'type' => 'html'
+						)
+					)
+				)
+			);
+			$this->assertTrue($this->params::schema($validSchema), 'nested schema should validate');
+		}
+
 	}

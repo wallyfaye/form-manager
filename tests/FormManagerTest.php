@@ -14,6 +14,19 @@
 		public function setUp()
 		{
 			$this->valid_params = array(
+				'formSchema' => array(
+					'test1' => array(
+						'type' => 'html'
+					),
+					'test2' => array(
+						'type' => 'group',
+						'children' => array(
+							'first_name' => array(
+								'type' => 'html'
+							)
+						)
+					)
+				),
 				'installDir' => __DIR__,
 				'inputSalt' => '1234567890123456',
 				'inputValues' => array(

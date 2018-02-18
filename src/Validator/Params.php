@@ -94,4 +94,66 @@
 
 		}
 
+		public static function schema($schema = ''){
+
+			$validFieldTypes = array(
+				'html',
+				'group',
+				'input_text',
+				'input_select',
+				'input_single_checkbox',
+				'input_text',
+				'input_file',
+				'input_textarea'
+			);
+
+			$schemaValid = true;
+
+			// if the schema is not set, fail
+			if($schema == ''){
+				$schemaValid = false;
+			}
+
+			// if the schema is not an string, fail
+			if(gettype($schema) != 'array'){
+				$schemaValid = false;
+			}
+
+			if($schemaValid === true){
+				if(count($schema) == 0){
+					$schemaValid = false;
+				} else {
+					foreach ($schema as $key_schema => $value_schema) {
+						if(!isset($value_schema['type']) || in_array($value_schema['type'], $validFieldTypes) === false ){
+							$schemaValid = false;
+						} else {
+							if($value_schema['type'] == 'group'){
+								if(!isset($value_schema['children'])){
+									$schemaValid = false;
+								} else {
+									if(gettype($value_schema['children']) != 'array'){
+										$schemaValid = false;
+									} else {
+										if(count($value_schema['children']) == 0){
+											$schemaValid = false;
+										} else {
+											foreach ($value_schema['children'] as $key_children_schema => $value_children_schema) {
+												if(!isset($value_children_schema['type']) || in_array($value_children_schema['type'], $validFieldTypes) === false ){
+													$schemaValid = false;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return $schemaValid;
+
+		}
+
+
 	}

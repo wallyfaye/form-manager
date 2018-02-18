@@ -12,6 +12,11 @@
 	// for ?m=i&v=1234
 		$fm = new FormManager(array(
 			'formSchema' => array(
+				'intro' => array(
+					'type' => 'html',
+					'field_name' => 'Intro',
+					'field_data' => '<h1>Hello World</h1>'
+				),
 				'name' => array(
 					'type' => 'group',
 					'group_name' => 'Name',
@@ -108,7 +113,8 @@
 				switch ($m) {
 					case 'i':
 						if($fm->validateHash($v, 'input')){
-							print_r($fm->inputValue);
+							$fm->inputValueJson;
+							print_r($fm->formSchema);
 						}
 					break;
 					
