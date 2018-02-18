@@ -57,7 +57,7 @@
 			if(!isset($params['formSchema']) || !$paramsValidator->schema($params['formSchema'])){
 				$paramsValid = false;
 			} else {
-				$this->formSchemaJson = json_encode($params['formSchema'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+				$this->formSchema = $params['formSchema'];
 			}
 
 			if($paramsValid){
@@ -126,10 +126,27 @@
 			$vh = new Hash($type, $this->inputSalt);
 			$hashed_value = $vh->generate($hash);
 			if(isset($this->inputValues[$hashed_value])){
-				$this->inputValueJson = json_encode($this->inputValues[$hashed_value], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+				$this->inputValue = $this->inputValues[$hashed_value];
 				$valid_hash = true;
 			}
 			return $valid_hash;
+		}
+
+		/**
+		* Valid hashes provided
+		*
+		* @return string
+		*/
+		public function getFormHTML()
+		{
+			$returnHTML = '';
+			if($this->paramsValid){
+				$formData = array(
+					'inputValue' => $this->inputValue,
+					'formSchema' => $this->formSchema
+				);
+			}
+			return $returnHTML;
 		}
 
 	}

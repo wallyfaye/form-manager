@@ -113,8 +113,9 @@
 				switch ($m) {
 					case 'i':
 						if($fm->validateHash($v, 'input')){
-							$fm->inputValueJson;
-							print_r($fm->formSchema);
+							// print_r($fm->inputValueJson);
+							// print_r($fm->formSchemaJson);
+							print_r($fm->getFormHTML());
 						}
 					break;
 					

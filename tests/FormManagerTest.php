@@ -156,6 +156,22 @@
 			
 		}
 
+		/** @test
+		 *	@covers FormManager\FormManager::getFormHTML
+		 */
+
+		public function test_returns_html(){
+			$this->main_dir = 'form_manager_root';
+			vfsStreamWrapper::register();
+			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
+
+			$valid_params_mocked = $this->valid_params;
+			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
+			$fm = new FormManager($valid_params_mocked);
+			$fm->validateHash('1234', 'input');
+			$this->assertEquals('string', gettype($fm->getFormHTML()), 'valid params should return html');
+			
+		}
 
 	}
 
