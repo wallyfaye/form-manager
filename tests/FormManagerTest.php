@@ -157,7 +157,7 @@
 		}
 
 		/** @test
-		 *	@covers FormManager\FormManager::getFormHTML
+		 *	@covers FormManager\FormManager::getFormData
 		 */
 
 		public function test_returns_html(){
