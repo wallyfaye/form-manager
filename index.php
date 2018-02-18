@@ -113,9 +113,7 @@
 				switch ($m) {
 					case 'i':
 						if($fm->validateHash($v, 'input')){
-							// print_r($fm->inputValueJson);
-							// print_r($fm->formSchemaJson);
-							print_r($fm->getFormHTML());
+							renderForm($fm->getFormData());
 						}
 					break;
 					
@@ -125,3 +123,9 @@
 				}
 			};
 		}
+
+	// some generic DOM render function
+		function renderForm($formData){
+			print_r($formData);
+		}
+

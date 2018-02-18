@@ -169,7 +169,7 @@
 			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
 			$fm = new FormManager($valid_params_mocked);
 			$fm->validateHash('1234', 'input');
-			$this->assertEquals('string', gettype($fm->getFormHTML()), 'valid params should return html');
+			$this->assertEquals('array', gettype($fm->getFormData()), 'valid params should return an array');
 			
 		}
 

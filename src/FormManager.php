@@ -133,20 +133,18 @@
 		}
 
 		/**
-		* Valid hashes provided
+		* Get data used to contstruct a form
 		*
-		* @return string
+		* @return array
 		*/
-		public function getFormHTML()
+		public function getFormData()
 		{
-			$returnHTML = '';
+			$formData = array();
 			if($this->paramsValid){
-				$formData = array(
-					'inputValue' => $this->inputValue,
-					'formSchema' => $this->formSchema
-				);
+				$formData['inputValue'] = $this->inputValue;
+				$formData['formSchema'] = $this->formSchema;
 			}
-			return $returnHTML;
+			return $formData;
 		}
 
 	}
