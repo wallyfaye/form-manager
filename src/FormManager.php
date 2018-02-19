@@ -4,7 +4,6 @@
 
 	use FormManager\Validator\Params;
 	use FormManager\Validator\Application;
-	use FormManager\Validator\Submission;
 	use FormManager\Hasher\Hash;
 	use FormManager\Installer\InstallationManager;
 
@@ -55,22 +54,10 @@
 				$this->inputSalt = $params['inputSalt'];
 			}
 
-			if(!isset($params['formSchema']) || !$paramsValidator->schema($params['formSchema'])){
+			if(!isset($params['fieldGroups']) || !$paramsValidator->fields($params['fieldGroups'])){
 				$paramsValid = false;
 			} else {
-
-				$formSchema = array();
-				foreach ($params['formSchema'] as $formSchema_key => $formSchema_value) {
-					$formSchema_value['key'] = $formSchema_key;
-					if($formSchema_value['type'] == 'group'){
-						foreach ($formSchema_value['children'] as $formSchema_children_key => $formSchema_children_value) {
-							$formSchema_value['children'][$formSchema_children_key]['key'] = $formSchema_children_key;
-						}
-					}
-					$formSchema[] = $formSchema_value;
-				}
-				$this->formSchema = $formSchema;
-
+				$this->fieldGroups = $params['fieldGroups'];
 			}
 
 			if($paramsValid){
@@ -155,33 +142,10 @@
 			$formData = array();
 			if($this->paramsValid){
 				$formData['inputValue'] = $this->inputValue;
-				$formData['formSchema'] = $this->formSchema;
+				// $formData['formSchema'] = $this->formSchema;
 
 			}
 			return $formData;
-		}
-
-		/**
-		* Handle form submissions
-		*
-		* @return array
-		*/
-		public function processSubmission($formPost){
-
-			$submission = new Submission();
-			$submission->keys($formPost, $this->formSchema);
-
-			if($submission->validSubmission){
-				foreach ($submission->validKeys as $key => $value) {
-					if(isset($formPost[$value])){
-						print_r($value . ', ' . $formPost[$value] . '<br />');
-					}
-				}
-			} else {
-				echo 'bad submission';
-			}
-
-
 		}
 
 	}

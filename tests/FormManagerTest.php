@@ -14,20 +14,22 @@
 		public function setUp()
 		{
 			$this->valid_params = array(
-				'formSchema' => array(
-					'test1' => array(
-						'type' => 'html',
-						'features' => array(
-							'validation' => array(
-								'required' => true
-							)
-						)
-					),
-					'test2' => array(
-						'type' => 'group',
-						'children' => array(
-							'first_name' => array(
-								'type' => 'html'
+				'fieldGroups' => array(
+					array(
+						'duplicatable' => true,
+						'fields' => array(
+							array(
+								'id' => 'first_name',
+								'field_text' => 'First Name',
+								'type' => 'input_text',
+								'required' => true,
+								'validation' => 'email'
+							),
+							array(
+								'id' => 'last_name',
+								'field_text' => 'Last Name',
+								'type' => 'input_text',
+								'required' => true,
 							)
 						)
 					)
@@ -176,35 +178,6 @@
 			$fm->validateHash('1234', 'input');
 			$this->assertEquals('array', gettype($fm->getFormData()), 'valid params should return an array');
 			
-		}
-
-		/** @test
-		 *	@covers FormManager\FormManager::processSubmission
-		 */
-
-		public function test_form_submission(){
-			$this->main_dir = 'form_manager_root';
-			vfsStreamWrapper::register();
-			vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->main_dir));
-
-			$valid_params_mocked = $this->valid_params;
-			$valid_params_mocked['installDir'] = vfsStream::url($this->main_dir);
-			$fm = new FormManager($valid_params_mocked);
-			$fm->validateHash('1234', 'input');
-			$this->assertEquals('array', gettype($fm->getFormData()), 'valid params should return an array');
-
-			$fm->processSubmission(array(
-				'postArg1' => 'Test1',
-				'postArg2' => 'Test2'
-			));
-
-			$fm->processSubmission(array(
-				'postArg1' => 'Test1',
-				'postArg2' => 'Test2',
-				'test1' => 'update'
-			));
-
-
 		}
 
 	}

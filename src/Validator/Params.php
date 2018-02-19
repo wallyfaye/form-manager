@@ -43,6 +43,12 @@
 
 		}
 
+		/**
+		* Validate input values
+		*
+		* @return boolean
+		*/
+
 		public static function values($values = ''){
 
 			$valuesValid = true;
@@ -76,6 +82,12 @@
 
 		}
 
+		/**
+		* Validate application salt
+		*
+		* @return boolean
+		*/
+
 		public static function salt($salt = ''){
 
 			$saltValid = true;
@@ -94,66 +106,77 @@
 
 		}
 
-		public static function schema($schema = ''){
+		/**
+		* Validate fields
+		*
+		* @return boolean
+		*/
+
+		public static function fields($fields = array()){
 
 			$validFieldTypes = array(
 				'html',
-				'group',
 				'input_text',
 				'input_select',
 				'input_single_checkbox',
-				'input_text',
 				'input_file',
 				'input_textarea'
 			);
 
-			$schemaValid = true;
+			$fieldsValid = true;
 
-			// if the schema is not set, fail
-			if($schema == ''){
-				$schemaValid = false;
+			if(count($fields) == 0){
+				$fieldsValid = false;
 			}
 
-			// if the schema is not an string, fail
-			if(gettype($schema) != 'array'){
-				$schemaValid = false;
+			if($fieldsValid && gettype($fields) != 'array'){
+				$fieldsValid = false;
 			}
 
-			if($schemaValid === true){
-				if(count($schema) == 0){
-					$schemaValid = false;
-				} else {
-					foreach ($schema as $key_schema => $value_schema) {
-						if(!isset($value_schema['type']) || in_array($value_schema['type'], $validFieldTypes) === false ){
-							$schemaValid = false;
-						} else {
-							if($value_schema['type'] == 'group'){
-								if(!isset($value_schema['children'])){
-									$schemaValid = false;
-								} else {
-									if(gettype($value_schema['children']) != 'array'){
-										$schemaValid = false;
-									} else {
-										if(count($value_schema['children']) == 0){
-											$schemaValid = false;
-										} else {
-											foreach ($value_schema['children'] as $key_children_schema => $value_children_schema) {
-												if(!isset($value_children_schema['type']) || in_array($value_children_schema['type'], $validFieldTypes) === false ){
-													$schemaValid = false;
-												}
-											}
-										}
-									}
-								}
+			if($fieldsValid){
+				foreach ($fields as $fields_key => $fields_value) {
+					if($fieldsValid && count($fields_value) == 0){
+						$fieldsValid = false;
+					}
+					if($fieldsValid && !isset($fields_value['fields'])){
+						$fieldsValid = false;
+					}
+					if($fieldsValid && gettype($fields_value['fields']) != 'array'){
+						$fieldsValid = false;
+					}
+					if($fieldsValid && count($fields_value['fields']) == 0){
+						$fieldsValid = false;
+					}
+					if($fieldsValid){
+						foreach ($fields_value['fields'] as $field_item_key => $field_item_value) {
+							if($fieldsValid && gettype($field_item_value) != 'array'){
+								$fieldsValid = false;
 							}
+							if($fieldsValid && count($field_item_value) == 0){
+								$fieldsValid = false;
+							}
+							if($fieldsValid && !isset($field_item_value['id'])){
+								$fieldsValid = false;
+							}
+							if($fieldsValid && gettype($field_item_value['id']) != 'string'){
+								$fieldsValid = false;
+							}
+							if($fieldsValid && !isset($field_item_value['type'])){
+								$fieldsValid = false;
+							}
+							if($fieldsValid && !in_array($field_item_value['type'], $validFieldTypes)){
+								$fieldsValid = false;
+							}
+							// if($fieldsValid && !in_array($field_item_value['id'], $validFieldTypes)){
+							// 	$fieldsValid = false;
+							// }
 						}
 					}
 				}
 			}
 
-			return $schemaValid;
+			return $fieldsValid;
 
 		}
-
 
 	}

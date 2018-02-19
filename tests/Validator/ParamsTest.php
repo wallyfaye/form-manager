@@ -53,42 +53,139 @@
 		}
 
 		/** @test
-		 *	@covers FormManager\Validator\Params::schema
+		 *	@covers FormManager\Validator\Params::fields
 		 */
 
-		public function validate_params_for_install_schema(){
+		public function validate_params_for_install_fields(){
 
-			$this->assertFalse($this->params::schema(), 'blank schema is not valid');
-			$this->assertFalse($this->params::schema('123'), 'non arrays are not valid');
-			$this->assertFalse($this->params::schema(array()), 'empty arrays are not valid');
-			$this->assertFalse($this->params::schema(array(array('type' => 'abc'))), 'types that are not recognized are not valid');
-			$this->assertFalse($this->params::schema(array(array('type' => 'group'))), 'type group without children set is not valid');
-			$this->assertFalse($this->params::schema(array(array('type' => 'group', 'children' => 123))), 'type group with children that is not an array is not valid');
-			$this->assertFalse($this->params::schema(array(array('type' => 'group', 'children' => array()))), 'type group with children that is an empty array is not valid');
-
-			$invalidSchema = array(
-				'test0' => array(
-					'type' => 'group', 
-					'children' => array(
-						'test1' => array(
-							'type' => 'abc'
+			$validFieldGroups = array(
+				array(
+					'duplicatable' => true,
+					'fields' => array(
+						array(
+							'id' => 'first_name',
+							'field_text' => 'First Name',
+							'type' => 'input_text',
+							'required' => true,
+							'validation' => 'email'
+						),
+						array(
+							'id' => 'last_name',
+							'field_text' => 'Last Name',
+							'type' => 'input_text',
+							'required' => true,
 						)
 					)
 				)
 			);
-			$this->assertFalse($this->params::schema($invalidSchema), 'type group with children that is an invalid type is not valid');
 
-			$validSchema = array(
-				'test0' => array(
-					'type' => 'group', 
-					'children' => array(
-						'test1' => array(
-							'type' => 'html'
+			$this->assertFalse($this->params::fields(), 'blank fields are not valid');
+
+			$this->assertFalse($this->params::fields(123), 'non array are not valid');
+
+			$this->assertFalse($this->params::fields(
+				array(
+				)
+			), 'empty arrays are not valid');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array()
+				)
+			), 'arrays with empty arrays are not valid');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array('test')
+				)
+			), 'each array should have a fields key');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => 123
+					)
+				)
+			), 'fields must be arrays');
+			
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array()
+					)
+				)
+			), 'fields cannot be an empty array');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							123
 						)
 					)
 				)
-			);
-			$this->assertTrue($this->params::schema($validSchema), 'nested schema should validate');
+			), 'fields cannot be composed of non arrays');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							array()
+						)
+					)
+				)
+			), 'fields cannot be composed of empty field arrays');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							array(123)
+						)
+					)
+				)
+			), 'field definitions must have an id key');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							array(
+								'id' => 123
+							)
+						)
+					)
+				)
+			), 'field definitions must have string id keys');
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							array(
+								'id' => 'test'
+							)
+						)
+					)
+				)
+			), 'field definitions must have type key');			
+
+			$this->assertFalse($this->params::fields(
+				array(
+					array(
+						'fields' => array(
+							array(
+								'id' => 'test',
+								'type' => 'random_type'
+							)
+						)
+					)
+				)
+			), 'field definitions must have a valid type');
+
+			$this->assertTrue($this->params::fields($validFieldGroups), 'properly formatted fields definitions are valid');
+
 		}
+
 
 	}

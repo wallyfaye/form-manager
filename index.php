@@ -11,85 +11,97 @@
 	// instantiate
 	// for ?m=i&v=1234
 		$fm = new FormManager(array(
-			'formSchema' => array(
-				'intro' => array(
-					'type' => 'html',
-					'field_name' => 'Intro',
-					'field_data' => '<h1>Hello World</h1>'
-				),
-				'name' => array(
-					'type' => 'group',
-					'group_name' => 'Name',
-					'features' => array(
-						'duplicatable' => true, 
-					),
-					'children' => array(
-						'first_name' => array(
-							'type' => 'input_text',
-							'field_name' => 'First Name',
-							'features' => array(
-								'validation' => array(
-									'required' => true
-								)
-							)
-						),
-						'last_name' => array(
-							'type' => 'input_text',
-							'field_name' => 'Last Name',
-							'features' => array(
-								'validation' => array(
-									'required' => true
-								)
-							)
+			'fieldGroups' => array(
+				array(
+					'fields' => array(
+						array(
+							'id' => 'intro',
+							'type' => 'html',
+							'field_data' => '<h1>Hello World</h1>'
 						)
 					)
 				),
-				'gender' => array(
-					'type' => 'input_select',
-					'field_name' => 'Gender',
-					'field_feed' => array(
+				array(
+					'duplicatable' => true,
+					'fields' => array(
 						array(
-							'item_value' => 'male', 
-							'item_name' =>  'Male'
+							'id' => 'first_name',
+							'field_text' => 'First Name',
+							'type' => 'input_text',
+							'required' => true
 						),
 						array(
-							'item_value' => 'female', 
-							'item_name' =>  'Female'
-						)
-					)
-				),
-				'subscribe' => array(
-					'type' => 'input_single_checkbox',
-					'field_name' => 'Do you want to subscribe?',
-					'field_feed' => array(
-						array(
-							'item_value' => 'yes', 
-							'item_name' =>  'Yes'
-						)
-					)
-				),
-				'email' => array(
-					'type' => 'input_text',
-					'field_name' => 'Email',
-					'features' => array(
-						'validation' => array(
-							'required' => false,
-							'rule' => 'email'
-						)
-					)
-				),
-				'resume' => array(
-					'type' => 'input_file',
-					'field_name' => 'Resume',
-					'features' => array(
-						'validation' => array(
+							'id' => 'last_name',
+							'field_text' => 'Last Name',
+							'type' => 'input_text',
 							'required' => true
 						)
 					)
 				),
-				'bio' => array(
-					'type' => 'input_textarea',
-					'field_name' => 'Bio'
+				array(
+					'fields' => array(
+						array(
+							'id' => 'gender',
+							'field_text' => 'Gender',
+							'type' => 'input_select',
+							'field_feed' => array(
+								array(
+									'item_value' => 'male', 
+									'item_name' =>  'Male'
+								),
+								array(
+									'item_value' => 'female', 
+									'item_name' =>  'Female'
+								)
+							)
+						)
+					)
+				),
+				array(
+					'fields' => array(
+						array(
+							'id' => 'subscribe',
+							'field_text' => 'Do you want to subscribe?',
+							'type' => 'input_single_checkbox',
+							'field_feed' => array(
+								array(
+									'item_value' => 'yes', 
+									'item_name' =>  'Yes'
+								)
+							)
+						)
+					)
+				),
+				array(
+					'fields' => array(
+						array(
+							'id' => 'email',
+							'field_text' => 'Email Address',
+							'type' => 'input_text',
+							'required' => true,
+							'validation' => 'email'
+						)
+					)
+				),
+				array(
+					'fields' => array(
+						array(
+							'id' => 'resume',
+							'field_text' => 'Resume',
+							'type' => 'input_file',
+							'required' => true,
+							'validation' => 'pdf'
+						)
+					)
+				),
+				array(
+					'fields' => array(
+						array(
+							'id' => 'bio',
+							'field_text' => 'Bio',
+							'type' => 'input_textarea'
+						)
+					)
 				)
 			),
 			'installDir' => __DIR__,
@@ -118,7 +130,12 @@
 					break;
 					
 					case 'o':
-						$fm->processSubmission($_POST);
+						if($fm->validateHash($v, 'input')){
+							echo 'processSubmission<br />';
+							echo '<pre>';
+							print_r($_POST);
+							echo '</pre>';
+						}
 					break;
 				}
 			};
