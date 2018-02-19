@@ -73,7 +73,7 @@
 					'field_name' => 'Email',
 					'features' => array(
 						'validation' => array(
-							'required' => true,
+							'required' => false,
 							'rule' => 'email'
 						)
 					)
@@ -113,19 +113,54 @@
 				switch ($m) {
 					case 'i':
 						if($fm->validateHash($v, 'input')){
-							renderForm($fm->getFormData());
+							renderForm($fm->getFormData(), $v);
 						}
 					break;
 					
 					case 'o':
-						echo 'o';
+						$fm->processSubmission($_POST);
 					break;
 				}
 			};
 		}
 
 	// some generic DOM render function
-		function renderForm($formData){
-			print_r($formData);
+		function renderForm($formData, $v){
+			// print_r($formData);
+			$some_var = json_encode($formData);
+			echo '<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<title>Document</title>
+			</head>
+			<body>
+				<form action="?m=o&v=' . $v . '" method="post">
+					<label for="first_name">first_name</label><br />
+					<input type="text" name="first_name" /><br />
+					<br />
+					<label for="last_name">last_name</label><br />
+					<input type="text" name="last_name" /><br />
+					<br />
+					<label for="unlisted_first_name">unlisted_first_name</label><br />
+					<input type="text" name="unlisted_first_name" /><br />
+					<br />
+					<label for="email">email</label><br />
+					<input type="text" name="email" /><br />
+					<br />
+					<label for="resume">resume</label><br />
+					<input type="file" name="resume" /><br />
+					<br />
+					<label for="unlisted_resume">unlisted_resume</label><br />
+					<input type="file" name="unlisted_resume" /><br />
+					<br />
+					<input type="submit"></input>
+				</form>
+				<script>
+					var data = ' . $some_var . ';
+					console.log(data);
+				</script>
+			</body>
+			</html>';
 		}
 
