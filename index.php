@@ -144,7 +144,8 @@
 
 	// some generic DOM render function
 		function renderForm($formData, $v){
-			$some_var = json_encode($formData);
+			$user_data = json_encode($formData);
+			$user_key = json_encode($v);
 			echo '<!DOCTYPE html>
 			<html lang="en">
 			<head>
@@ -174,8 +175,9 @@
 					<input type="submit"></input>
 				</form>
 				<script>
-					var data = ' . $some_var . ';
-					console.log(data);
+					var user_data = ' . $user_data . ';
+					var user_key = ' . $user_key . ';
+					console.log(user_data);
 				</script>
 			</body>
 			</html>';
