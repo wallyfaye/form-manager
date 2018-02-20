@@ -114,7 +114,7 @@
 			vfsStreamWrapper::getRoot()->chmod(0000);
 			$this->assertEquals('install_failed', $fm->install(), 'install needs permission to occur');
 
-			vfsStreamWrapper::getRoot()->chmod(0700);
+			vfsStreamWrapper::getRoot()->chmod(0300);
 			$this->assertEquals('installed', $fm->install(), 'good params allow for installation');
 
 			$this->assertEquals('installed', $fm->install(), 'install occurs only once');

@@ -20,7 +20,7 @@
 			}
 
 			if (!file_exists($dir)) {
-				if(@mkdir($dir, 0700, true)){
+				if(@mkdir($dir, 0300, true)){
 					$dir_created = true;
 				}
 			}

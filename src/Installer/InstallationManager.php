@@ -48,8 +48,8 @@
 				is_dir($path_submission)
 			){
 				if(
-					substr(sprintf('%o', fileperms($path_main_fm)), -4) == '0700' &&
-					substr(sprintf('%o', fileperms($path_submission)), -4) == '0700'
+					substr(sprintf('%o', fileperms($path_main_fm)), -4) == '0300' &&
+					substr(sprintf('%o', fileperms($path_submission)), -4) == '0300'
 				){
 					return 'installed';
 				} else {

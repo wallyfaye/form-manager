@@ -46,7 +46,7 @@
 			$this->assertFalse(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should not exist');
 			$this->assertTrue(FolderManager::createUserDirectory(vfsStream::url($this->main_dir) . '/' . $directory_to_test), 'directory should have been created');
 			$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($directory_to_test), 'directory should exist');
-			$this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild($directory_to_test)->getPermissions(), 'directory should only have write permissions');
+			$this->assertEquals(0300, vfsStreamWrapper::getRoot()->getChild($directory_to_test)->getPermissions(), 'directory should only have write permissions');
 
 		}
 	}

@@ -7,6 +7,7 @@
 	use FormManager\Validator\Submission;
 	use FormManager\Hasher\Hash;
 	use FormManager\Installer\InstallationManager;
+	use FormManager\FileSystem\FolderManager;
 
 	class FormManager{
 
@@ -245,14 +246,40 @@
 
 		public function saveSubmission($submittedFields){
 			$this->submittedFields = $submittedFields;
-			echo '<pre>';
-			print_r($this->submissionHash);
-			echo '</pre>';
-			echo '---<br />';
-			echo '<pre>';
-			print_r($this->submittedFields);
-			echo '</pre>';
-			return true;
+			$submission_dir = 'fm/submissions/' . $this->submissionHash;
+			if(FolderManager::createUserDirectory($submission_dir)){
+
+				$userSubmission = array();
+
+				foreach ($this->submittedFields as $field_key => $field_value) {
+					switch($field_value['schema']['type']){
+						case 'input_file':
+							$target_file = $submission_dir . '/' . $field_value['id'] . '.pdf';
+							move_uploaded_file($field_value['data']['tmp_name'], $target_file);
+							chmod($target_file, 0000);
+						break;
+
+						default:
+							$userSubmission[$field_value['id']] = $field_value['data'];
+						break;
+					}
+				}
+
+				$userSubmissionJson = json_encode($userSubmission, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+				$target_file = $submission_dir . '/data.json';
+
+				$fp = fopen($target_file, 'w');
+				fwrite($fp, $userSubmissionJson);
+				fclose($fp);
+				chmod($target_file, 0000);
+
+				return true;
+
+			} else {
+
+				return false;
+
+			}
 		}
 
 	}

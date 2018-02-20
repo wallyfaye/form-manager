@@ -48,10 +48,10 @@
 			$this->assertTrue($im->doInstall(vfsStream::url($this->main_dir)), 'install should have succeeded');
 
 			$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('fm'), 'main directory should exist');
-			$this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('fm')->getPermissions(), 'main directory should only have write permissions');
+			$this->assertEquals(0300, vfsStreamWrapper::getRoot()->getChild('fm')->getPermissions(), 'main directory should only have write permissions');
 
 			$this->assertTrue(vfsStreamWrapper::getRoot()->getChild('fm')->hasChild('submissions'), 'submissions directory should exist');
-			$this->assertEquals(0700, vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->getPermissions(), 'submissions directory should only have write permissions');
+			$this->assertEquals(0300, vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->getPermissions(), 'submissions directory should only have write permissions');
 
 		}
 
@@ -68,7 +68,7 @@
 
 			vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->chmod(0777);
 			$this->assertEquals('bad_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should have permission problems');
-			vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->chmod(0700);
+			vfsStreamWrapper::getRoot()->getChild('fm')->getChild('submissions')->chmod(0300);
 
 			vfsStreamWrapper::getRoot()->getChild('fm')->chmod(0777);
 			$this->assertEquals('bad_install', $im->checkInstall(vfsStream::url($this->main_dir)), 'the installation should have permission problems');
