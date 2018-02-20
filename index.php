@@ -131,10 +131,11 @@
 					
 					case 'o':
 						if($fm->validateHash($v, 'input')){
-							echo 'processSubmission<br />';
-							echo '<pre>';
-							print_r($_POST);
-							echo '</pre>';
+							if($fm->validateSubmission($_POST, $_FILES)){
+								echo 'did submit';
+							} else {
+								echo 'not submitted';
+							}
 						}
 					break;
 				}
@@ -143,7 +144,6 @@
 
 	// some generic DOM render function
 		function renderForm($formData, $v){
-			// print_r($formData);
 			$some_var = json_encode($formData);
 			echo '<!DOCTYPE html>
 			<html lang="en">
@@ -152,7 +152,7 @@
 				<title>Document</title>
 			</head>
 			<body>
-				<form action="?m=o&v=' . $v . '" method="post">
+				<form enctype="multipart/form-data" action="?m=o&v=' . $v . '" method="post">
 					<label for="first_name">first_name</label><br />
 					<input type="text" name="first_name" /><br />
 					<br />

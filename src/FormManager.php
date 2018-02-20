@@ -4,6 +4,7 @@
 
 	use FormManager\Validator\Params;
 	use FormManager\Validator\Application;
+	use FormManager\Validator\Submission;
 	use FormManager\Hasher\Hash;
 	use FormManager\Installer\InstallationManager;
 
@@ -126,6 +127,7 @@
 			$vh = new Hash($type, $this->inputSalt);
 			$hashed_value = $vh->generate($hash);
 			if(isset($this->inputValues[$hashed_value])){
+				$this->submissionHash = $hashed_value;
 				$this->inputValue = $this->inputValues[$hashed_value];
 				$valid_hash = true;
 			}
@@ -142,10 +144,115 @@
 			$formData = array();
 			if($this->paramsValid){
 				$formData['inputValue'] = $this->inputValue;
-				// $formData['formSchema'] = $this->formSchema;
-
+				$formData['fieldGroups'] = $this->fieldGroups;
 			}
 			return $formData;
+		}
+
+		/**
+		* Checks if form was submitted properly
+		*
+		* @return boolean
+		*/
+		public function validateSubmission($postData = array(), $fileData = array())
+		{
+
+			$submitted = false;
+			$submissionValid = true;
+			$validatedFields = array();
+
+			foreach ($this->fieldGroups as $group_key => $group_value) {
+				foreach ($group_value['fields'] as $field_key => $field_value) {
+
+					$field_valid = true;
+					$field_id = $field_value['id'];
+					$is_field_declared = isset($postData[$field_id]);
+					$is_file_declared = isset($fileData[$field_id]);
+					$is_required = isset($field_value['required']) && $field_value['required'];
+					$is_validation_set = isset($field_value['validation']);
+
+					if(!$is_field_declared && !$is_file_declared && $is_required){
+
+						$field_valid = false;
+
+					} else if($is_field_declared){
+
+						$is_field_empty = $postData[$field_id] == '';
+
+						if($is_required && $is_field_empty){
+							$field_valid = false;
+						}
+
+						if($field_valid && $is_validation_set && !$is_field_empty){
+
+							if(!Submission::fieldTypeValidator($field_value['validation'], $postData[$field_id])){
+								$field_valid = false;
+							}
+						}
+
+					} else if ($is_file_declared){
+
+						$is_field_empty = $fileData[$field_id]['name'] == '';
+
+						if($is_required && $is_field_empty){
+							$field_valid = false;
+						}
+
+						if($field_valid && $is_validation_set && !$is_field_empty){
+
+							if(!Submission::fieldTypeValidator($field_value['validation'], $fileData[$field_id])){
+								$field_valid = false;
+							}
+						}
+
+					}
+
+					if($field_valid){
+
+						if($is_field_declared){
+							$validatedFields[] = array(
+								'id' => $field_id,
+								'data' => $postData[$field_id],
+								'schema' => $field_value
+							);
+						} else if ($is_file_declared){
+
+							$validatedFields[] = array(
+								'id' => $field_id,
+								'data' => $fileData[$field_id],
+								'schema' => $field_value
+							);
+
+						}
+
+					} else {
+
+						$submissionValid = false;
+
+					}
+
+				}
+			}
+
+			if($submissionValid){
+				if($this->saveSubmission($validatedFields)){
+					$submitted = true;
+				}
+			}
+
+			return $submissionValid && $submitted;
+		}
+
+		public function saveSubmission($submittedFields){
+			$this->submittedFields = $submittedFields;
+			echo '<pre>';
+			print_r($this->submissionHash);
+			echo '</pre>';
+			echo '---<br />';
+			echo '<pre>';
+			print_r($this->submittedFields);
+			echo '</pre>';
+			return true;
 		}
 
 	}
