@@ -140,6 +140,17 @@
 					break;
 				}
 			};
+			if(isset($argv)){
+				switch ($argv[1]) {
+					case 'e':
+						if(isset($argv[2])){
+							$fm->extract($argv[2]);
+						} else {
+							$fm->extract();
+						}
+					break;
+				}
+			}
 		}
 
 	// some generic DOM render function

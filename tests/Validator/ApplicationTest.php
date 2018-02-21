@@ -16,6 +16,7 @@
 
 			$this->assertTrue(Application::mode('i'), 'i is a valid mode');
 			$this->assertTrue(Application::mode('o'), 'o is a valid mode');
+			$this->assertTrue(Application::mode('e'), 'e is a valid mode');
 			$this->assertFalse(Application::mode('io'), 'i and o are the only valid modes');
 			$this->assertFalse(Application::mode(), 'i and o are the only valid modes');
 			$this->assertFalse(Application::mode(function(){exit();}), 'i and o are the only valid modes');

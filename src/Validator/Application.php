@@ -23,6 +23,10 @@
 					$valid_run_mode = true;
 					break;
 				
+				case 'e':
+					$valid_run_mode = true;
+					break;
+				
 				default:
 					break;
 			}

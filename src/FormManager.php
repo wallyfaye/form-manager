@@ -244,6 +244,12 @@
 			return $submissionValid && $submitted;
 		}
 
+
+		/**
+		* Storage for form submissions
+		*
+		* @return boolean
+		*/
 		public function saveSubmission($submittedFields){
 			$this->submittedFields = $submittedFields;
 			$submission_dir = 'fm/submissions/' . $this->submissionHash;
@@ -280,6 +286,69 @@
 				return false;
 
 			}
+		}
+
+		/**
+		* Get data used to contstruct a form
+		*
+		* @return array
+		*/
+		public function extract($folderName = 'extract')
+		{
+			$extract_dir = $folderName . '/';
+			$csv_file = $extract_dir . 'file.csv';
+			mkdir($extract_dir, 0700);
+
+			$header_row = array();
+			$header_row[] = 'key';
+			foreach ($this->fieldGroups as $fieldGroups_key => $fieldGroups_value) {
+				foreach ($fieldGroups_value['fields'] as $fields_key => $fields_value) {
+					if($fields_value['type'] != 'html'){
+						$header_row[] = $fields_value['id'];
+					}
+				}
+			}
+			$export_array = array();
+			$export_array[] = $header_row;
+
+			foreach ($this->inputValues as $key => $value) {
+				$user_dir = 'fm/submissions/' . $key;
+				if(file_exists($user_dir)){
+					$json_data = $user_dir . '/data.json';
+					$dir_files = scandir($user_dir);
+					foreach ($dir_files as $dir_files_key => $dir_files_value) {
+						if($dir_files_value != '.' && $dir_files_value != '..'){
+							$new_filename = $key . '_' . $dir_files_value;
+							$new_filepath = $extract_dir . $new_filename;
+							$existing_filepath = $user_dir . '/' . $dir_files_value;
+							copy($existing_filepath, $new_filepath);
+							chmod($new_filepath, 0600);
+						}
+					};
+					$json = json_decode(file_get_contents($json_data), true);
+					$user_row = array();
+					foreach($header_row as $header_row_key => $header_row_value){
+						if($header_row_value == 'key'){
+							$user_row[] = $key;
+						} else if(isset($json[$header_row_value])){
+							$user_row[] = $json[$header_row_value];
+						} else {
+							$user_row[] = "";
+						}
+					}
+					$export_array[] = $user_row;
+				}
+			}
+
+			$fp = fopen($csv_file, 'w');
+			chmod($csv_file, 0600);
+
+			foreach ($export_array as $fields) {
+			    fputcsv($fp, $fields);
+			}
+
+			fclose($fp);
+
 		}
 
 	}
