@@ -11,8 +11,7 @@ A manager to submit, process, and view forms
 ### Inputter
 - Data Retrieval
 - Form UI
-- Form Processor
 
 ### Outputter
-- Report Builder
-- Form Viewer
+- Form Processor
+- Extraction
